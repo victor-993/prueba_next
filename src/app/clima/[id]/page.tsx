@@ -4,7 +4,7 @@ import { obtenerNombreMes } from "@/utils/dateUtils";
 import { ClimateData, HistoricalData } from "@/types/types";
 
 
-export default async function ClimatePage({ params }: { params: { id: string } }) {
+export default async function ClimatePage({ params }:  { params: Record<string, string> }) {
   let climateData: ClimateData | null = null;
   let historicalData: HistoricalData[] = [];
   const { id } = params;
