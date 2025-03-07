@@ -10,13 +10,13 @@ const Navbar = () => {
     <>
       <header className="bg-white py-2 flex flex-col items-center shadow-md">
         <h1 className="mx-auto flex items-center">
-          <a href="/">
+          <Link href="/">
             <img 
               alt="logo" 
               src="https://colombia.aclimate.org/Environment/Colombia/logo.png" 
               className="text-center" 
             />
-          </a>
+          </Link>
         </h1>
       </header>
 
