@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import {useMemo, useEffect, useState } from 'react';
-import { Station } from '@/types/types';
+import { Station, Department } from '@/types/types';
 
 const API_URL = "https://webapi.aclimate.org/api/Geographic/61e59d829d5d2486e18d2ea8/json";
 
@@ -26,19 +26,19 @@ export default function Home() {
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }
-        const data = await response.json();
+        const data : Department[] = await response.json();
         
         // 🔹 Extraer estaciones del JSON
-        const extractedStations: Station[] = data.flatMap((department: any) =>
-          department.municipalities.flatMap((municipality: any) =>
-            municipality.weather_stations.map((station: any) => ({
+        const extractedStations: Station[] = data.flatMap((department) =>
+          department.municipalities.flatMap((municipality) =>
+            municipality.weather_stations.map((station) => ({
               id: station.id,
               name: station.name,
               latitude: station.latitude,
               longitude: station.longitude,
               department: department.name,
               municipality: municipality.name,
-              crops: [...new Set(station.ranges.map((r: any) => r.crop_name))],
+              crops: [...new Set(station.ranges.map((r) => r.crop_name))],
             }))
           )
         );
