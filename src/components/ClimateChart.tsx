@@ -66,26 +66,6 @@ const ClimateChart = ({
     },
   });
 
-  const createLineChartData = (
-    label: string,
-    data: number[],
-    color: string,
-  ) => ({
-    labels: months,
-    datasets: [
-      {
-        label,
-        data,
-        borderColor: color,
-        backgroundColor: color,
-        fill: false,
-      },
-    ],
-    options: {
-        maintainAspectRatio: false,
-    }
-  });
-
   const noDataPlugin = {
     id: 'noData',
     afterDatasetsDraw: (chart: ChartJS) => {
@@ -112,20 +92,6 @@ const ClimateChart = ({
 
         ctx.restore();
       }
-    },
-  };
-
-  const plugin = {
-    id: 'custom_canvas_background_color',
-    beforeDraw: (chart: ChartJS) => {
-      const {ctx} = chart;
-      ctx.save();
-      ctx.globalCompositeOperation = 'destination-over';
-      ctx.fillRect(0, 0, chart.width, chart.height);
-      ctx.restore();
-    },
-    defaults: {
-      color: 'lightGreen',
     },
   };
 

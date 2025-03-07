@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import {useMemo, useEffect, useState } from 'react';
 import { Station } from '@/types/types';
@@ -19,7 +18,6 @@ export default function Home() {
 
 
   const [stations, setStations] = useState<Station[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchStations = async () => {
@@ -48,8 +46,6 @@ export default function Home() {
         setStations(extractedStations);
       } catch (error) {
         console.error("Error al cargar estaciones:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
