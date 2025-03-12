@@ -78,7 +78,7 @@ const ClimateChart = ({
       console.log(data.datasets);
       const allEmpty = data.datasets.every((dataset) => dataset.data.every((val) => val === null || val === undefined));
       if (allEmpty) {
-        ctx.fillStyle = 'rgba(200, 200, 200, 0.5)'; // Fondo gris claro
+        ctx.fillStyle = 'rgba(102, 102, 102, 0.5)'; // Fondo gris claro
         ctx.fillRect(left, top, right - left, bottom - top);
 
         ctx.font = 'bold 20px sans-serif';
@@ -105,9 +105,6 @@ const ClimateChart = ({
               yearData.monthly_data[i]?.data.find((d) => d.measure === measure)
                 ?.value ?? null, 
           );
-
-          
-          if (data.every((val) => val === null)) return null;
 
           return {
             label: month,
