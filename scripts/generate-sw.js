@@ -11,7 +11,7 @@ generateSW({
     {
       // Cachear páginas HTML (navegación)
       urlPattern: ({ request }) => request.mode === 'navigate',
-      handler: 'NetworkFirst', // Cambiado de NetworkFirst
+      handler: 'StaleWhileRevalidate', 
       options: {
         cacheName: 'pages-cache',
         expiration: {

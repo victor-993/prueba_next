@@ -33,7 +33,7 @@ const Map = (Map: MapProps) => {
         <Marker key={station.id} position={[station.latitude, station.longitude]}>
           <Popup>
             <div>
-            <Link href={`/clima/${station.id}`} className="text-blue-600 underline">
+            <Link href={`/clima/${station.id}`} className="text-blue-600 underline" prefetch={false} >
               <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
             </Link>
               <br />
