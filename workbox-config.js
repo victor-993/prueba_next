@@ -62,21 +62,6 @@ module.exports = {
         },
       },
     },
-    {
-      // Cachear tiles de mapas
-      urlPattern: /.*\.openstreetmap\.org\/.*\.png$/,
-      handler: "CacheFirst",
-      options: {
-        cacheName: "map-tiles-cache",
-        expiration: {
-          maxEntries: 500,
-          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
-        },
-        cacheableResponse: {
-          statuses: [0, 200],
-        },
-      },
-    },
   ],
 }
 
