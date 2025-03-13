@@ -10,15 +10,25 @@ generateSW({
   runtimeCaching: [
     {
       // Cachear páginas HTML (navegación)
-      urlPattern: /\/$/,
-      handler: "StaleWhileRevalidate",
+      urlPattern: ({ request }) => request.mode === 'navigate',
+      handler: 'StaleWhileRevalidate', // Cambiado de NetworkFirst
       options: {
-        cacheName: "pages-cache",
+        cacheName: 'pages-cache',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
+          maxAgeSeconds: 30 * 24 * 60 * 60 // 30 días
         },
-      },
+        cacheableResponse: {
+          statuses: [0, 200]
+        },
+        // Importante: actualizar la caché en segundo plano
+        backgroundSync: {
+          name: 'pages-update',
+          options: {
+            maxRetentionTime: 24 * 60 // 24 horas
+          }
+        }
+      }
     },
     {
       // Cachear API externa específica
@@ -56,21 +66,6 @@ generateSW({
         expiration: {
           maxEntries: 20,
           maxAgeSeconds: 60 * 24 * 60 * 60, // 60 días
-        },
-      },
-    },
-    {
-      // Cachear tiles de mapas
-      urlPattern: /.*\.openstreetmap\.org\/.*\.png$/,
-      handler: "CacheFirst",
-      options: {
-        cacheName: "map-tiles-cache",
-        expiration: {
-          maxEntries: 500,
-          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
-        },
-        cacheableResponse: {
-          statuses: [0, 200],
         },
       },
     },
