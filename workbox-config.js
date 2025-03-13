@@ -7,7 +7,7 @@ module.exports = {
   runtimeCaching: [
     {
       // Cachear páginas HTML (navegación)
-      urlPattern: /\/$/,
+      urlPattern: ({ request }) => request.mode === "navigate",
       handler: "StaleWhileRevalidate",
       options: {
         cacheName: "pages-cache",
@@ -15,6 +15,16 @@ module.exports = {
           maxEntries: 50,
           maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
         },
+        cacheableResponse: {
+          statuses: [0, 200]
+        },
+        // Importante: actualizar la caché en segundo plano
+        backgroundSync: {
+          name: 'pages-update',
+          options: {
+            maxRetentionTime: 24 * 60 // 24 horas
+          }
+        }
       },
     },
     {
