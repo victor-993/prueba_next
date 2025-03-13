@@ -10,6 +10,7 @@ const Navbar = () => {
     <>
       <header className="bg-white py-2 flex flex-col items-center shadow-md">
         <h1 className="mx-auto flex items-center">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/">
             <img 
               alt="logo" 
@@ -22,7 +23,7 @@ const Navbar = () => {
 
       <nav className="bg-green-500 p-4">
         <div className="container mx-auto flex justify-between items-center">
-
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/" className="text-white text-xl font-bold">
             AClimate
           </a>

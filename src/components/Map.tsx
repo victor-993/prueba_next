@@ -33,9 +33,10 @@ const Map = (Map: MapProps) => {
         <Marker key={station.id} position={[station.latitude, station.longitude]}>
           <Popup>
             <div>
-            <a href={`/clima/${station.id}`} className="text-blue-600 underline" >
-              <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
-            </a>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href={`/clima/${station.id}`} className="text-blue-600 underline" >
+                <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
+              </a>
               <br />
               🌱 Cultivos: {station.crops.length > 0 ? station.crops.join(", ") : "No disponible"}
             </div>
