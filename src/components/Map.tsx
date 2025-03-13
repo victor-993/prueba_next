@@ -3,7 +3,7 @@
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
 import {LatLngExpression, LatLngTuple} from 'leaflet';
 import { Station } from '@/types/types';
-import Link from "next/link";
+//import Link from "next/link";
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -33,9 +33,9 @@ const Map = (Map: MapProps) => {
         <Marker key={station.id} position={[station.latitude, station.longitude]}>
           <Popup>
             <div>
-            <Link href={`/clima/${station.id}`} className="text-blue-600 underline" prefetch={false} >
+            <a href={`/clima/${station.id}`} className="text-blue-600 underline" >
               <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
-            </Link>
+            </a>
               <br />
               🌱 Cultivos: {station.crops.length > 0 ? station.crops.join(", ") : "No disponible"}
             </div>

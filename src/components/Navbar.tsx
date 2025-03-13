@@ -10,22 +10,22 @@ const Navbar = () => {
     <>
       <header className="bg-white py-2 flex flex-col items-center shadow-md">
         <h1 className="mx-auto flex items-center">
-          <Link href="/">
+          <a href="/">
             <img 
               alt="logo" 
               src="https://colombia.aclimate.org/Environment/Colombia/logo.png" 
               className="text-center" 
             />
-          </Link>
+          </a>
         </h1>
       </header>
 
       <nav className="bg-green-500 p-4">
         <div className="container mx-auto flex justify-between items-center">
 
-          <Link href="/" className="text-white text-xl font-bold">
+          <a href="/" className="text-white text-xl font-bold">
             AClimate
-          </Link>
+          </a>
 
           <button 
             className="md:hidden p-2 rounded focus:outline-none" 
