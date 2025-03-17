@@ -1,49 +1,39 @@
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import ClimateChart from "@/components/ClimateChart";
 import { obtenerNombreMes } from "@/utils/dateUtils";
 import { ClimateData, HistoricalData } from "@/types/types";
 
-export default function ClimatePage() {
-  const { id } = useParams(); // Obtener parámetro dinámico en el cliente
-  const [climateData, setClimateData] = useState<ClimateData | null>(null);
-  const [historicalData, setHistoricalData] = useState<HistoricalData[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!id) return; // Evita ejecutar si no hay un ID
+export default async function ClimatePage(props:  { params: Promise<Record<string, string>> }) {
+  const params = await props.params;
+  let climateData: ClimateData | null = null;
+  let historicalData: HistoricalData[] = [];
+  const { id } = params;
 
-    const fetchData = async () => {
-      try {
-        const climateRes = await fetch(
-          `https://webapi.aclimate.org/api/Historical/Climatology/${id}/json`,
-          { cache: "no-store" }
-        );
+  try {
+    const climateRes  = await fetch(`https://webapi.aclimate.org/api/Historical/Climatology/${id}/json`, {
+      cache: "no-store",
+    });
 
-        if (!climateRes.ok) throw new Error("Error en datos climáticos");
+    if (!climateRes .ok) return notFound();
 
-        const climateJson = await climateRes.json();
-        setClimateData(climateJson[0]);
+    const data: ClimateData[] = await climateRes .json();
+    climateData = data[0];
+  } catch (error) {
+    console.error("Error al obtener datos climáticos:", error);
+  }
 
-        const historicalRes = await fetch(
-          `https://webapi.aclimate.org/api/Historical/HistoricalClimatic/${id}/json`,
-          { cache: "no-store" }
-        );
+  try {
+    const historicalRes = await fetch(`https://webapi.aclimate.org/api/Historical/HistoricalClimatic/${id}/json`, {
+      cache: "no-store",
+    });
 
-        if (!historicalRes.ok) throw new Error("Error en datos históricos");
+    if (!historicalRes.ok) return notFound();
 
-        setHistoricalData(await historicalRes.json());
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id]);
-
-  if (loading) return <p className="p-6">Cargando datos...</p>;
+    historicalData = await historicalRes.json();
+  } catch (error) {
+    console.error("Error al obtener datos climáticos historicos:", error);
+  }
 
   return (
     <div className="p-6">
