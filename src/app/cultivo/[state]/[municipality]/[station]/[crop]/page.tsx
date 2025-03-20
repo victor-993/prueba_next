@@ -56,6 +56,7 @@ export default async function CropStationPage({
 
   let yieldData: YieldEntry[] = [];
   let agronomicData: AgronomicData | null = null;
+  let yieldExceeData: YieldEntry[] = [];
 
   const cultivarIds = new Set<string>();
   const soilIds = new Set<string>();
@@ -96,6 +97,13 @@ export default async function CropStationPage({
     }
     if (!stationDataCrop) return notFound();
 
+    const yieldExceeResponse = await fetch(
+      `https://webapi.aclimate.org/api/Forecast/YieldExceedance/${stationDataCrop.id}/json`,
+      {cache: 'no-store'},
+    );
+    if (!yieldExceeResponse.ok)
+      throw new Error('Error al obtener los datos de rendimiento excee');
+
     const yieldResponse = await fetch(
       `https://webapi.aclimate.org/api/Forecast/Yield/${stationDataCrop.id}/json`,
       {cache: 'no-store'},
@@ -113,6 +121,9 @@ export default async function CropStationPage({
     const yieldJson = await yieldResponse.json();
     yieldData = yieldJson.yield[0].yield || [];
 
+    const yieldExceeJson = await yieldExceeResponse.json();
+    yieldExceeData = yieldExceeJson.yield[0].yield || [];
+
     const dataAgronomic: AgronomicResponse = await agronomicResponse.json();
     agronomicData = dataAgronomic.find((cp) => cp.cp_name === decodedParams.crop) || null;
 
@@ -129,6 +140,7 @@ export default async function CropStationPage({
       : [];
 
     console.log('yield ', yieldData);
+    console.log('yield_Exceedance ', yieldExceeData);
     console.log('agronomic', agronomicData);
     console.log('weather station', stationDataCrop);
     console.log('cultivares', cultivars);
