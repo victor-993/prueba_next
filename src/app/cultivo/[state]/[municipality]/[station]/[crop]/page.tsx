@@ -87,7 +87,7 @@ export default async function CropStationPage({
                   station: stationData.name,
                   ...stationData,
                   ranges: stationData.ranges
-                    .filter((range: any) => range.crop_name.toLowerCase() === decodedParams.crop.toLowerCase())
+                    .filter((range: CropRange) => range.crop_name.toLowerCase() === decodedParams.crop.toLowerCase())
                 };
               }
             }
