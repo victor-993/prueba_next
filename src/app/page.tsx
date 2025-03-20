@@ -7,7 +7,7 @@ import { Station, Department } from '@/types/types';
 const API_URL = "https://webapi.aclimate.org/api/Geographic/61e59d829d5d2486e18d2ea8/json";
 
 export default function Home() {
-  const Map = useMemo(
+  const MapLeaflet = useMemo(
     () =>
       dynamic(() => import('@/components/Map'), {
         loading: () => <p>A map is loading</p>,
@@ -85,7 +85,15 @@ export default function Home() {
               longitude: station.longitude,
               department: department.name,
               municipality: municipality.name,
-              crops: [...new Set(station.ranges.map((r) => r.crop_name))],
+              crops: [
+                // 🔹 Ahora los cultivos incluyen `crop_name` y `crop_id`
+                ...new Map(
+                  station.ranges.map((r) => [
+                    r.crop_id, 
+                    { crop_name: r.crop_name, crop_id: r.crop_id }
+                  ])
+                ).values(),
+              ],
             }))
           )
         );
@@ -102,7 +110,7 @@ export default function Home() {
 
   return (
     <div>
-      <Map posix={[4.5709, -74.2973]} stations={stations} />
+      <MapLeaflet posix={[4.5709, -74.2973]} stations={stations} />
     </div>
   );
 }
