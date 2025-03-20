@@ -53,6 +53,9 @@ export default async function CropStationPage({
   const cultivarIds = new Set<string>();
   const soilIds = new Set<string>();
 
+  let cultivars: Cultivar[] = [];
+  let soils: Soil[]  = [];
+
   console.log(resolvedParams);
 
   try {
@@ -109,20 +112,18 @@ export default async function CropStationPage({
       soilIds.add(entry.soil);
     });
 
-    const cultivars: Cultivar[] = agronomicData
-    ? agronomicData.cultivars.filter((c) => cultivarIds.has(c.id))
-    : [];
-  const soils: Soil[] = agronomicData
-    ? agronomicData.soils.filter((s) => soilIds.has(s.id))
-    : [];
-
+    cultivars = agronomicData
+      ? agronomicData.cultivars.filter((c) => cultivarIds.has(c.id))
+      : [];
+    soils = agronomicData
+      ? agronomicData.soils.filter((s) => soilIds.has(s.id))
+      : [];
 
     console.log('yield ', yieldData);
     console.log('agronomic', agronomicData);
     console.log('weather station', stationDataCrop);
-    console.log("cultivares", cultivars)
-    console.log("suelos", soils)
-
+    console.log('cultivares', cultivars);
+    console.log('suelos', soils);
   } catch (error) {
     console.error('Error al cargar la estación:', error);
   }
@@ -159,6 +160,28 @@ export default async function CropStationPage({
         </ul>
       ) : (
         <p>No hay información de rangos para este cultivo en esta estación.</p>
+      )}
+
+      <h2 className='text-xl font-semibold mt-4'>Cultivares en Yield</h2>
+      {cultivars?.length > 0 ? (
+        <ul className='list-disc list-inside'>
+          {cultivars?.map((cultivar) => (
+            <li key={cultivar.id}>{cultivar.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No hay cultivares encontrados en Yield.</p>
+      )}
+
+      <h2 className='text-xl font-semibold mt-4'>Suelos en Yield</h2>
+      {soils?.length > 0 ? (
+        <ul className='list-disc list-inside'>
+          {soils?.map((soil) => (
+            <li key={soil.id}>{soil.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No hay suelos encontrados en Yield.</p>
       )}
     </div>
   );
