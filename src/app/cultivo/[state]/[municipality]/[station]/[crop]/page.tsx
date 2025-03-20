@@ -47,6 +47,13 @@ export default async function CropStationPage({
   const {state, municipality, station, crop} = resolvedParams;
   let stationDataCrop: StationDataCrop | null = null;
 
+  const decodedParams = {
+    state: decodeURIComponent(state),
+    municipality: decodeURIComponent(municipality),
+    station: decodeURIComponent(station),
+    crop: decodeURIComponent(crop),
+  };
+
   let yieldData: YieldEntry[] = [];
   let agronomicData: AgronomicData | null = null;
 
@@ -65,19 +72,21 @@ export default async function CropStationPage({
     const dataState: APIState[] = await response.json();
 
     for (const stateData of dataState) {
-      if (stateData.name.toLowerCase() === state.toLowerCase()) {
+      if (stateData.name.toLowerCase() === decodedParams.state.toLowerCase()) {
         for (const municipalityData of stateData.municipalities) {
           if (
-            municipalityData.name.toLowerCase() === municipality.toLowerCase()
+            municipalityData.name.toLowerCase() === decodedParams.municipality.toLowerCase()
           ) {
             for (const stationData of municipalityData.weather_stations) {
-              if (stationData.name.toLowerCase() === station.toLowerCase()) {
+              if (stationData.name.toLowerCase() === decodedParams.station.toLowerCase()) {
                 stationDataCrop = {
                   country: stateData.country.id,
                   state: stateData.name,
                   municipality: municipalityData.name,
                   station: stationData.name,
                   ...stationData,
+                  ranges: stationData.ranges
+                    .filter((range: any) => range.crop_name.toLowerCase() === decodedParams.crop.toLowerCase())
                 };
               }
             }
@@ -105,7 +114,7 @@ export default async function CropStationPage({
     yieldData = yieldJson.yield[0].yield || [];
 
     const dataAgronomic: AgronomicResponse = await agronomicResponse.json();
-    agronomicData = dataAgronomic.find((cp) => cp.cp_name === crop) || null;
+    agronomicData = dataAgronomic.find((cp) => cp.cp_name === decodedParams.crop) || null;
 
     yieldData.forEach((entry) => {
       cultivarIds.add(entry.cultivar);
